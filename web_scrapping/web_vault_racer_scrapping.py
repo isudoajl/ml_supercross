@@ -44,16 +44,13 @@ def scrape_website(url):
             elif key == '450':
                 data_450.extend(table_data)
         
-        # Print reference labels for each output
-        print("Output for value 250:")
-        print("=" * 50)
-        print(json.dumps(format_data(data_250), indent=2))
-        print("=" * 50)
+        # Write output for value 250 to a file
+        with open("250_results.txt", "w") as file_250:
+            file_250.write(json.dumps(format_data(data_250), indent=2))
         
-        print("Output for value 450:")
-        print("=" * 50)
-        print(json.dumps(format_data(data_450), indent=2))
-        print("=" * 50)
+        # Write output for value 450 to a file
+        with open("450_results.txt", "w") as file_450:
+            file_450.write(json.dumps(format_data(data_450), indent=2))
     
     else:
         # Print an error message if the request was not successful
