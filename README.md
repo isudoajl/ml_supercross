@@ -1,4 +1,4 @@
-# Recommendations and Best Practices for Pilot Project
+# Recommendations and Best Practices for SUPERCROSS ML Pilot Project
 
 1. **Version Control with Git**: Continue using Git for version control. Ensure that you have a clear branching strategy (e.g., feature branches, develop branch, main/master branch) and commit frequently with descriptive commit messages.
 
