@@ -1,15 +1,10 @@
 version: '3'
 
 services:
-  test:
-    image: python:latest
-    command: ["python", "-m", "http.server"]
-
-version: '3'
-
-services:
   python_web_scrapping:
-    image: docker.io/library/python
+    image: python:latest
     container_name: python_web_scrapping
-    command: ["python", "-m", "http.server"]
+    volumes:
+      - ./dependencies/requirements.txt:/requirements.txt  # Mounting requirements.txt
+    command: sh -c "pip install -r /requirements.txt && python -m http.server"
 
