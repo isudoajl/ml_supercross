@@ -16,15 +16,24 @@ date_urls = [
     "1974-09-02"
 ]
 cc = ["125mx", "250mx", "500mx"]
-location = ["hangtown-motocross-classic", "baymare-cycle-park"]
+location_file = "/ml_supercross/web_scraping/data_collection/json_venue_urls.json"
 base_url = "https://vault.racerxonline.com/{}/{}/{}"
+
+def load_location_from_file(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+        return data['urls']
 
 def make_requests():
     urls_with_200_response = []
+    locations = load_location_from_file(location_file)
     
     for date_url in date_urls:
+        print(f"Processing date_url: {date_url}")
         for cc_value in cc:
-            for loc in location:
+            print(f"\tProcessing cc_value: {cc_value}")
+            for loc in locations:
+                print(f"\t\tProcessing location: {loc}")
                 url = base_url.format(date_url, cc_value, loc)
                 response = requests.get(url)
                 if response.status_code == 200:
