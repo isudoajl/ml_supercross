@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -19,25 +18,36 @@ def convert_dates(json_data):
 
     return converted_dates
 
-# Send a GET request to the URL
-url = "https://vault.racerxonline.com/2010/mx/races"
-response = requests.get(url)
+# List of years to iterate over
+years = ["1974", "1975", "1976"]
 
-# Check if the request was successful
-if response.status_code == 200:
-    # Parse the HTML content
-    soup = BeautifulSoup(response.content, "html.parser")
+# Iterate over each year
+for year in years:
+    # Construct the URL for the current year
+    url = f"https://vault.racerxonline.com/{year}/mx/races"
 
-    # Find all <p> tags on the page
-    p_tags = soup.find_all("p")
+    # Send a GET request to the URL
+    response = requests.get(url)
 
-    # Extract only the first value for each <p> occurrence
-    p_values = [p_tag.contents[0].strip() for p_tag in p_tags if p_tag.contents]
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, "html.parser")
 
-    # Convert the dates in the JSON data
-    converted_dates = convert_dates(json.dumps(p_values))
+        # Find all <p> tags on the page
+        p_tags = soup.find_all("p")
 
-    # Print the converted dates in JSON format
-    print(json.dumps(converted_dates, indent=4))
-else:
-    print("Failed to retrieve data from the URL.")
+        # Extract only the first value for each <p> occurrence
+        p_values = [p_tag.contents[0].strip() for p_tag in p_tags if p_tag.contents]
+
+        # Convert the dates in the JSON data
+        converted_dates = convert_dates(json.dumps(p_values))
+
+        # Print the converted dates in JSON format for the current year
+        print(f"{year}:")
+        print(json.dumps(converted_dates, indent=4))
+        print()
+    else:
+        print(f"Failed to retrieve data from the URL for the year {year}.")
+
+
