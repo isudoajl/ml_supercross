@@ -21,6 +21,9 @@ def convert_dates(json_data):
 # List of years to iterate over
 years = ["1974", "1975", "1976"]
 
+# Initialize an empty dictionary to store the converted dates for each year
+converted_data = {}
+
 # Iterate over each year
 for year in years:
     # Construct the URL for the current year
@@ -43,11 +46,11 @@ for year in years:
         # Convert the dates in the JSON data
         converted_dates = convert_dates(json.dumps(p_values))
 
-        # Print the converted dates in JSON format for the current year
-        print(f"{year}:")
-        print(json.dumps(converted_dates, indent=4))
-        print()
+        # Store the converted dates for the current year
+        converted_data[year] = converted_dates
     else:
         print(f"Failed to retrieve data from the URL for the year {year}.")
 
+# Print the converted dates in JSON format for each year
+print(json.dumps(converted_data, indent=4))
 
