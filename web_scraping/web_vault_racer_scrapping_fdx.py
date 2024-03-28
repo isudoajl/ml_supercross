@@ -33,28 +33,29 @@ for year, year_urls in urls.items():
         # Find the table you're interested in
         table = soup.find('table')
         
-        # Initialize a list to store the data
-        data = []
-        
         # Check if the table is found
         if table:
             # Find all table rows
             rows = table.find_all('tr')
             
-            # Loop through each row
-            for row in rows:
+            # Loop through each row skipping the header row
+            for row in rows[1:]:
                 # Find all table data cells in the row
                 cells = row.find_all('td')
                 
                 # Extract the text from each cell and add to the data list
-                row_data = [cell.text.strip() for cell in cells]
+                row_data = {
+                    "position": cells[0].text.strip(),
+                    "pilot": cells[1].text.strip(),
+                    "hometown": cells[2].text.strip(),
+                    "moto_1": cells[3].text.strip(),
+                    "moto_2": cells[4].text.strip(),
+                    "team": cells[5].text.strip(),
+                    "winner": "true" if cells[0].text.strip() == "1" else "false"
+                }
                 
-                # Check if the row data is not empty
-                if any(row_data):
-                    data.append(row_data)
-    
-        # Extend the year_data list with the elements of data
-        year_data.extend(data)
+                # Append the row data to the year data
+                year_data.append(row_data)
     
     # Add the data for the current year to the organized data dictionary
     organized_data[year] = year_data
