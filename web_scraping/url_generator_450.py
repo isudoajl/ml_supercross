@@ -50,7 +50,7 @@ def main():
         
         if valid_urls:
             # Save the dictionary of valid URLs to a file
-            file_path = '/ml_supercross/web_scraping/data_collection/generated_urls.json'
+            file_path = '/ml_supercross/web_scraping/data_collection/generated_urls_450.json'
             with open(file_path, 'w') as file:
                 json.dump(valid_urls, file, indent=4)
             print("Generated URLs saved to:", file_path)
