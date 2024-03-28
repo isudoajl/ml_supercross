@@ -2,17 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-# JSON object containing URLs for different years and categories
-urls = {
-    "2010": [
-        "https://vault.racerxonline.com/2010-05-22/250/hangtown-motocross-classic",
-        "https://vault.racerxonline.com/2010-05-22/450/hangtown-motocross-classic"
-    ],
-    "2023": [
-        "https://vault.racerxonline.com/2023-05-27/250/pala-raceway",
-        "https://vault.racerxonline.com/2023-05-27/450/pala-raceway"
-    ]
-}
+# Load the URLs from the JSON file
+with open('/ml_supercross/web_scraping/data_collection/generated_urls_450.json', 'r') as file:
+    urls = json.load(file)
 
 # Initialize a dictionary to store the organized data
 organized_data = {}
@@ -52,9 +44,9 @@ for year, year_urls in urls.items():
                 # Check if the row data is not empty
                 if any(row_data):
                     data.append(row_data)
-    
-        # Extend the year_data list with the elements of data
-        year_data.extend(data)
+        
+        # Add the data for the current URL to the list of data for the current year
+        year_data.append(data)
     
     # Add the data for the current year to the organized data dictionary
     organized_data[year] = year_data
@@ -62,6 +54,10 @@ for year, year_urls in urls.items():
 # Convert the organized data dictionary to JSON format
 json_organized_data = json.dumps(organized_data, indent=4)
 
-# Print the JSON output
-print(json_organized_data)
+# Write the JSON output to a file
+output_file_path = '/ml_supercross/web_scraping/data_collection/450_races.json'
+with open(output_file_path, 'w') as output_file:
+    output_file.write(json_organized_data)
+
+print(f"Output saved to: {output_file_path}")
 
