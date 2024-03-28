@@ -17,7 +17,7 @@ def construct_urls(data):
     # Extracting date values from the input data
     date_urls = [date for year_dates in data.values() for date in year_dates]
     
-    cc = ["250", "450"]
+    cc = ["250"]
     base_url = "https://vault.racerxonline.com/{}/{}/{}"
 
     urls_with_200_response = {}
