@@ -1,11 +1,23 @@
 import json
+import subprocess
 import requests
 
 def construct_urls(data):
-    # Your JSON data in a more concise format
+    try:
+        # Loading location data from the JSON file
+        with open('/ml_supercross/web_scraping/data_collection/json_venue_cut_urls.json', 'r') as file:
+            location_data = json.load(file)
+        
+        # Extracting location values from JSON
+        location = location_data["events"]
+    except KeyError:
+        print("Error: 'events' key not found in the JSON file.")
+        return
+    
+    # Extracting date values from the input data
     date_urls = [date for year_dates in data.values() for date in year_dates]
-    cc = ["125mx", "250mx", "500mx"]
-    location = ["hangtown-motocross-classic", "baymare-cycle-park"]
+    
+    cc = ["250", "450"]
     base_url = "https://vault.racerxonline.com/{}/{}/{}"
 
     urls_with_200_response = {}
@@ -23,17 +35,31 @@ def construct_urls(data):
 
     return urls_with_200_response
 
-# Example usage:
-data = {
-    "1974": ["1974-04-08"],
-    "1975": ["1975-04-06"]
-}
+def main():
+    # Define the command to call the Python program
+    command = ['python', '/ml_supercross/web_scraping/web_vault_fetch_racing_dates.py']
+    
+    try:
+        # Execute the command and capture its output
+        output = subprocess.check_output(command, universal_newlines=True)
+        # Load the output JSON into the 'data' variable
+        data = json.loads(output)
+        
+        # Now you can use the 'data' variable as needed
+        valid_urls = construct_urls(data)
+        
+        if valid_urls:
+            # Save the dictionary of valid URLs to a file
+            file_path = '/ml_supercross/web_scraping/data_collection/generated_urls.json'
+            with open(file_path, 'w') as file:
+                json.dump(valid_urls, file, indent=4)
+            print("Generated URLs saved to:", file_path)
+        
+    except subprocess.CalledProcessError as e:
+        print("Error executing the command:", e)
+    except json.JSONDecodeError as e:
+        print("Error decoding JSON output:", e)
 
-valid_urls = construct_urls(data)
-
-# Convert the dictionary of valid URLs to JSON
-json_output = json.dumps(valid_urls, indent=4)
-
-# Print the JSON output
-#print(json_output)
+if __name__ == "__main__":
+    main()
 

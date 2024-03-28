@@ -19,7 +19,8 @@ def convert_dates(json_data):
     return converted_dates
 
 # List of years to iterate over
-years = ["1974", "1975", "1976"]
+years = list(map(str, range(2010, 2024)))
+# years = ["2020"]
 
 # Initialize an empty dictionary to store the converted dates for each year
 converted_data = {}
